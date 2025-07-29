@@ -8,11 +8,12 @@ import AddToCartButton from '../../Components/AddToCart/addToCart';
 import MenuRef from '../../Components/Menu/Menu';
 import ItemRoundCard, { ItemCard } from '../../Components/ItemCard/ItemCard';
 import CustomHeader from '../../Components/customHeader/customHeader';
+import NewArrivals from '../../Components/newArrivals/NewArrivals';
 // import SplashScreen from 'react-native-splash-screen';
 // import Carousel from 'react-native-reanimated-carousel';
 
-const { width } = Dimensions.get('window');
-const Home = ({setIndex,index}) => {
+const { width,height } = Dimensions.get('window');
+const Home = () => {
 
 
   const [bannerData, setBannerData] = useState([]);
@@ -33,11 +34,11 @@ const Home = ({setIndex,index}) => {
 
 
   return (
-    <View style={{backgroundColor: '#e9f7f4',flexGrow:1}}>
+    <ScrollView style={{backgroundColor: '#e9f7f4',flexGrow:1}}>
       {/* <LinearGradient colors={['#009b77', '#e0f7f4']} style={{ paddingBottom: width * 0.02 }}> */}
-      <CustomHeader />
+      {/* <CustomHeader /> */}
       <View >
-      <MenuRef setIndex={setIndex} index={index}/>
+      <MenuRef />
       </View>
       <View>
     <FlatList
@@ -47,10 +48,10 @@ const Home = ({setIndex,index}) => {
     showsHorizontalScrollIndicator={true}
     keyExtractor={(item) => item.toString()}
     renderItem={({ item }) => (
-      <View style={{ width, height: 85 }}>
+      <View style={{ width, height: height*0.15}}>
         <Image
           source={{ uri: item }}
-          style={{ width: width, height: '100%', resizeMode: 'contain' }}
+          style={{ width: width, height: height*.15, resizeMode: 'contain' }}
         />
       </View>
     )}
@@ -59,14 +60,20 @@ const Home = ({setIndex,index}) => {
   {/* </LinearGradient> */}
   {/* <View style={{ flex:1, justifyContent: 'center', alignItems: 'center',backgroundColor: '#e9f7f4'}}>
     <View style={{flexDirection: 'row', justifyContent: 'space-between', width: width, flexWrap: 'wrap'}}> */}
-    <ItemRoundCard setIndex={setIndex}/>
+    <ItemRoundCard/>
     {/* </View>
     </View> */}
-    <View >
+    {/* <View > */}
       {/* <ItemCard setIndex={setIndex}/> */}
+    {/* </View> */}
+    <View>
+      <NewArrivals/>
     </View>
-  </View>
+  </ScrollView>
   )
+
+
+  
   
 };
 
@@ -81,12 +88,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    marginBottom: 20,
+    // marginBottom: 20,
     alignItems: 'center',
   },
   bannerImage: {
     width: width*.9,
-    height: 200,
+    // height: 200,
     borderRadius: 10,
   },
   bannerText: {

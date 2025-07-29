@@ -9,7 +9,7 @@ import ChangePassword from "../changePassword/changePassword";
 import { Dimensions } from "react-native";
 
 const {width} = Dimensions.get('window')
-const Signup = ({setIndex}) => {
+const Signup = () => {
   
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -91,7 +91,7 @@ const Signup = ({setIndex}) => {
   }
 
   if (loginPage) {
-    return <Login loginRef={setLoginPage} setIndex={setIndex}/>
+    return <Login loginRef={setLoginPage}/>
     // return <ChangePassword />
   }
 

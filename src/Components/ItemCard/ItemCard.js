@@ -10,17 +10,17 @@ import { CardContext } from "../../Context/CardContext";
 
 
 const { width } = Dimensions.get("window");
+// const navigation = useNavigation();
 
 
-const ItemRoundCard = ({setIndex}) => {
+const ItemRoundCard = () => {
   const [cardRef, setcardRef] = useState([]);
  const {setCardData} = useContext(CardContext);
-// const navigation = useNavigation();
   const handleProfCategory = (item) => {
     setCardData(item.shotform);
     console.log(item.shotform);
-    // navigation.navigate('ProfCategory');
-    setIndex(1);
+    // navigation.navigate('Menu');
+    // setIndex(1);
 
   }
 
@@ -64,12 +64,12 @@ const ItemRoundCard = ({setIndex}) => {
 }
 
 
-const ItemCard = ({ setIndex }) => {
+const ItemCard = () => {
   const [cardRef, setcardRef] = useState([]);
 
    const handleProfCategory = () => {
-    // navigation.navigate('ProfCategory');
-     setIndex(1);
+    // navigation.navigate('Menu');
+    //  setIndex(1);
     }
         
   useEffect(() => {

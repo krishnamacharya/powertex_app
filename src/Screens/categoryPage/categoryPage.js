@@ -6,13 +6,13 @@ import BottomNavBar from "../../Components/bottomNavBar/BottomNavBar";
 import MenuRef from "../../Components/Menu/Menu";
 
 
-const Category = ({index}) => {
+const CategoryPage = () => {
     const [cardsData,setCardsData]=useState([])
 
   return (
     <View style={styles.container}>
         {/* <ProfCategory/> */}
-        <MenuRef index={index}/>
+        <MenuRef />
       {/* <Text>Category</Text> */}
     </View>
 
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 });
-export default Category;
+export default CategoryPage;

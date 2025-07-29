@@ -5,18 +5,20 @@ import { Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { CardContext } from "../../Context/CardContext";
-import { transparent } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
-
+import { useRoute } from "@react-navigation/native";
+import NewArrivals from "../newArrivals/NewArrivals";
 
 const { width ,height} = Dimensions.get('window');
-
-const MenuRef = ({ setIndex, index }) => {
+const MenuRef = () => {
+    const route = useRoute();
     const [menuRef, setMenuRef] = useState([]);
+    const [searchPage,setSearchPage]=useState(false);
     const [subCat, setSubCat] = useState([]);
     const [loading, setLoading] = useState(true)
     const navigation = useNavigation();
     const { setCategory, category } = useContext(CardContext);
-
+        const {query}= route.params || {query:[]};
+                console.log(query,'jhdsbfudhj');
     useEffect(() => {
         const fetchMenuData = async () => {
             try {
@@ -25,6 +27,10 @@ const MenuRef = ({ setIndex, index }) => {
                 console.log(response.data);
                 setLoading(false);
 
+            //    if(query != []){
+            //     setSearchPage(true);
+            //     setCategory('');
+            //     }
                 if(!category?.category){
                     setCategory(response.data[0])
                     console.log('hiiiiiiiiiiiiiiiiiiiiiiiiiii')
@@ -37,15 +43,22 @@ const MenuRef = ({ setIndex, index }) => {
     }, [])
 
     const handlePress = (item) => {
-        // navigation.navigate('')
-        if (index != 1) {
-            setIndex(1);
-        }
+       if(route.name=='Home'){
+        navigation.navigate('Menu')
+       }
         setCategory(item);
         console.log(item);
         // setSubCat(item)
     }
-    if (index == 1) {
+
+if(query=='newArrivals'){
+    console.log('newArrivals in menu',query)
+    return(
+        <NewArrivals/>
+    )
+}
+
+    if (route.name=='Menu') {
         console.log(category);
         return (
             <>
@@ -68,7 +81,7 @@ const MenuRef = ({ setIndex, index }) => {
                                                     category?.category !== item?.category && styles.cardBack
                                                 ]}>
                                                     <Image
-                                                        source={{ uri: "https://powertextools.com/pptsparesimages/Category/powertools_c.png" }}
+                                                        source={{ uri: item.Image }}
                                                         style={{ width: width * .15, height: height * 0.05 }}
                                                         resizeMode="contain"
                                                     />
@@ -87,14 +100,14 @@ const MenuRef = ({ setIndex, index }) => {
                             keyExtractor={(item, index) => index.toString()}
                             columnWrapperStyle={{ justifyContent: 'space-between' }}
                             renderItem={({ item }) => (
-                                <View style={{ padding: 5,backgroundColor:'white' }}>
+                                <TouchableOpacity style={{ padding: 5,backgroundColor:'white' }} onPress={()=>(navigation.navigate(""))}>
                                     <Image
                                         source={{ uri: "https://powertextools.com/pptsparesimages/Category/powertools_c.png" }}
                                         style={{ width: width * .2, height: width * .2 }}
                                         resizeMode="contain"
                                     />
                                     <Text style={[styles.text,{color:'#737573'}]}>{item?.subcategory}</Text>
-                                </View>
+                                </TouchableOpacity>
                             )}
                         />
                         </View>
@@ -119,7 +132,7 @@ const MenuRef = ({ setIndex, index }) => {
                         <View style={{ padding: 2, marginHorizontal: 5, alignItems: 'center', marginVertical: 10 }}>
                             <View style={styles.card}>
                                 <Image
-                                    source={{ uri: "https://powertextools.com/pptsparesimages/Category/powertools_c.png" }}
+                                    source={{ uri: item.Image}}
                                     style={{ width: width * .5, height: '100%' }}
                                     resizeMode="contain"
                                 />
@@ -188,6 +201,7 @@ const styles = StyleSheet.create({
         fontSize:10,
         width: width * .2,
         textAlign:"center",
+
         fontWeight: 'bold',
         paddingVertical:5,
         borderBottomWidth:1,

@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useState } from "react";
 import { changePasswordRef } from "../../Services";
 import { TouchableOpacity } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const ChangePassword = () => {
@@ -12,14 +14,31 @@ const ChangePassword = () => {
     const [isPasswordVisible, setPasswordVisible] = useState([]);
 
 
+    const getData = async () => {
+        console.log('enter local')
+        try {
+            const value = await AsyncStorage.getItem("userData");
+            console.log(value,"changePass")
+           return value != null ? JSON.parse(value) : null;
+        } catch (e) {
+            console.error("Failed to load:", e);
+        }
+    };
+
     const handleSubmit = async () => {
+        console.log("enter function")
+        const id =await getData();
+        const userid =id.userid;
+        console.log(id,"loginid");
         const payload = {
             password:newPasswordRef.current,
-            confirmPassword:confirmPasswordRef.current
+            password2:confirmPasswordRef.current,
+            userid:userid
         }
         console.log(payload)
         try {
-            const response = await changePasswordRef();
+            const response = await changePasswordRef(payload);
+            
         } catch (err) {
             console.log(err)
         }

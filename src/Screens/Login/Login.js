@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, KeyboardAvoidingView, Keyboard, Platform, TouchableWithoutFeedback, TextInput } from "react-native";
 import { getBanners, signInRef } from "../../Services/index"; // Make sure this is defined and returns the correct format
 import { useEffect, useState } from "react";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Signup from "../Signup/Signup";
+import { CardContext } from "../../Context/CardContext";
 
-const Login = ({ loginRef, setIndex }) => {
+const Login = () => {
     const [isPasswordVisible, setPasswordVisible] = useState(true);
     const [username, setUsername] = useState([]);
     const [password, setPassword] = useState([]);
+    const { setUserData } = useContext(CardContext);
     const error = {};
 
     const handleLogin = async () => {
@@ -20,13 +23,13 @@ const Login = ({ loginRef, setIndex }) => {
             const response = await signInRef(payload);
             const loginStatus = response;
             console.log(loginStatus);
+            if(loginStatus.status=='Ok'){
+                console.log("enterif")
+              await storeData(loginStatus);
+                setUserData(loginStatus);
+            }
             if (loginStatus == 'Invalid Password') {
                 error.message = loginStatus;
-            }
-            else {
-                setIndex(0);
-                storeData(userData, loginStatus)
-                // console.log(setIndex)
             }
         } catch (err) {
             error.message = "something went wrong"
@@ -35,18 +38,20 @@ const Login = ({ loginRef, setIndex }) => {
     }
 
     // ✅ Save data
-    const storeData = async (key, value) => {
+    const storeData = async ( value) => {
+        console.log(value);
         try {
-            await AsyncStorage.setItem(key, JSON.stringify(value));
+            await AsyncStorage.setItem("userData", JSON.stringify(value));
+            // console.log(await AsyncStorage.getItem("userData"));
         } catch (e) {
             console.error("Failed to save:", e);
         }
     };
 
     // ✅ Read data
-    const getData = async (key) => {
+    const getData = async () => {
         try {
-            const value = await AsyncStorage.getItem(key);
+            const value = await AsyncStorage.getItem('userData');
             return value != null ? JSON.parse(value) : null;
         } catch (e) {
             console.error("Failed to load:", e);
@@ -99,7 +104,7 @@ const Login = ({ loginRef, setIndex }) => {
                             <Text style={styles.buttonText} >Sign Up</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => loginRef(false)}>
+                        <TouchableOpacity onPress={() => (<Signup/>)}>
                             <Text style={styles.link} >New User ? Register</Text>
                         </TouchableOpacity>
                     </View>
